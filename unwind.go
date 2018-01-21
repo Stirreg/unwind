@@ -1,39 +1,31 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"path"
 	"time"
 )
 
-type entry struct {
-	Title    string
-	Content  string
-	Datetime time.Time
-}
-
 func main() {
-	time := time.Now()
-	basepath := os.Args[1]
-	filename := fmt.Sprintf("%s.json", time.Format("2006-01-02_15-04-05"))
-	filepath := path.Join(basepath, filename)
+	if len(os.Args) < 3 {
+		entry := LoadEntryFromJSONFile(os.Args[1])
+		fmt.Println(entry)
+	} else {
+		time := time.Now()
+		filename := fmt.Sprintf("%s.json", time.Format("2006-01-02"))
 
-	var entry entry
+		entry := Entry{
+			Datetime: time,
+			Title:    os.Args[1],
+			Content:  os.Args[2],
+		}
 
-	entry.Datetime = time
-	entry.Title = os.Args[2]
-	entry.Content = os.Args[3]
+		err := entry.saveToJSONFile(filename)
 
-	data, err := json.Marshal(entry)
-	if err != nil {
-		fmt.Println(err)
-	}
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	err = ioutil.WriteFile(filepath, data, 0644)
-	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("New entry saved to %s \n", filename)
 	}
 }

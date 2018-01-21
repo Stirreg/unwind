@@ -7,7 +7,7 @@
 - Have go installed on your machine: https://golang.org/doc/install
 - Go to your `$GOPATH`.
 - Run `go get github.com/Stirreg/unwind` in your shell.
-- Run program using `./bin/unwind [directory] [title] [content]` e.g.: `./bin/unwind entries "Some title" "Some long piece of content."`. You can omit the `./` if your `$GOPATH/bin` is in your path. On windows add `.exe` to the end of the program name and use back slashes instead of forward slashes.
+- Run program using `./bin/unwind [title] [content]` e.g.: `./bin/unwind "Some title" "Some long piece of content."`. You can omit the `./` if your `$GOPATH/bin` is in your path. On windows add `.exe` to the end of the program name and use back slashes instead of forward slashes.
 
 Todo:
 
