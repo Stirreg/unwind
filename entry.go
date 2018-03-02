@@ -1,32 +1,30 @@
-package main
+package unwind
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"time"
 )
 
+// Entry describes a days events.
 type Entry struct {
 	Title    string    `json:"title"`
 	Content  string    `json:"content"`
 	Datetime time.Time `json:"datetime"`
 }
 
-func (entry *Entry) saveToJSONFile(filename string) error {
-	data, err := json.Marshal(entry)
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(filename, data, 0644)
+type entryStorer interface {
+	Store(*Entry) error
 }
 
-func LoadEntryFromJSONFile(filename string) Entry {
-	data, _ := ioutil.ReadFile(filename)
+type entryLoader interface {
+	Load(time.Time) Entry
+}
 
-	entry := Entry{}
+// Store stores an entry using any object that fulfills the entryStorer interface.
+func (entry *Entry) Store(entryStorer entryStorer) error {
+	return entryStorer.Store(entry)
+}
 
-	json.Unmarshal(data, &entry)
-
-	return entry
+// LoadEntry returns an Entry from a time.Time object.
+func LoadEntry(entryLoader entryLoader, dateTime time.Time) Entry {
+	return entryLoader.Load(dateTime)
 }
