@@ -28,3 +28,7 @@ func (entry *Entry) Store(entryStorer entryStorer) error {
 func LoadEntry(entryLoader entryLoader, dateTime time.Time) Entry {
 	return entryLoader.Load(dateTime)
 }
+
+func NewEntry() Entry {
+	return Entry{Datetime: time.Now()}
+}
